@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_clima/screens/location.dart';
 import 'screens/color_pallate.dart';
 import 'constants/constants.dart';
 import 'screens/home_page.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const LoadingScreen(),
-        '/Home': (context) => const HomePage(),
+        '/Home': (context) => const LocationScreen(),
         '/pallate': (context) => const ColorPallate()
       },
       theme: ThemeData.from(colorScheme: kColorScheme),
