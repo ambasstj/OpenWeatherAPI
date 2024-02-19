@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:real_clima/constants/constants.dart';
 import 'package:real_clima/services/networking.dart';
-
 import '../services/location.dart';
-
-const String _key = 'bc68cc0cf6fd3ec141057a18459720ba';
-var weatherInfo;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../services/weather_model.dart';
+import 'location.dart';
 
 class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({super.key});
+  LoadingScreen({super.key});
+
+  final WeatherModel weatherModel = WeatherModel();
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -48,26 +50,16 @@ class LoadingScreen extends StatelessWidget {
         desiredAccuracy: LocationAccuracy.low);
   }
 
-  void getLocationData() async {
-    Location location = Location();
-    await location.getCurrentLocation();
-    weatherInfo = await NetWorkingService(
-            'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$_key')
-        .getWeatherData();
-    print(weatherInfo['name']);
-  }
-
   @override
   Widget build(BuildContext context) {
-    // _determinePosition();
-    getLocationData();
+    _determinePosition();
+    weatherModel.getLocationData(context);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.pushNamed(context, '/pallate');
+      }),
       body: Center(
-        child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/Home');
-            },
-            child: Text('City name is')),
+        child: SpinKitFoldingCube(color: kcustomBlue.shade600, size: 80),
       ),
     );
   }
